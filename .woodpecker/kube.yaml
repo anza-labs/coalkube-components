@@ -1,0 +1,145 @@
+variables:
+- &platforms linux/amd64,linux/arm64,linux/riscv64
+- &image woodpeckerci/plugin-docker-buildx
+- &kubernetes_tag 'v1.30.0'
+- &maintainers 'Mateusz Urbanek <mateusz.urbanek.98@gmail.com>'
+- logins: &logins
+  - registry: https://ghcr.io/
+    username: shanduur-auto
+    password:
+      from_secret: ghcr-token
+- &backend_options
+  kubernetes:
+    securityContext:
+      privileged: true
+
+when:
+- event: push
+  branch: main
+  path:
+    include:
+    - '.woodpecker/kube.yaml'
+    - 'containers/kubernetes/*'
+- event: manual
+
+clone:
+  git:
+    image: woodpeckerci/plugin-git
+    settings:
+      recursive: true
+
+steps:
+  kubelet:
+    image: *image
+    privileged: true
+    settings:
+      dockerfile: ./containers/kubernetes/Dockerfile
+      context: ./containers/kubernetes
+      registry: ghcr.io
+      repo: ghcr.io/anza-labs/kubelet
+      logins:
+      - <<: *logins
+      platforms: *platforms
+      tags: *kubernetes_tag
+      build_args_from_env:
+      - MAINTAINERS
+      - VERSION
+      build_args:
+      - BIN=kubelet
+    environment:
+      MAINTAINERS: *maintainers
+      VERSION: *kubernetes_tag
+    backend_options:
+      <<: *backend_options
+
+  kube-controller-manager:
+    image: *image
+    privileged: true
+    settings:
+      dockerfile: ./containers/kubernetes/Dockerfile
+      context: ./containers/kubernetes
+      registry: ghcr.io
+      repo: ghcr.io/anza-labs/kube-controller-manager
+      logins:
+      - <<: *logins
+      platforms: *platforms
+      tags: *kubernetes_tag
+      build_args_from_env:
+      - MAINTAINERS
+      - VERSION
+      build_args:
+      - BIN=kube-controller-manager
+    environment:
+      MAINTAINERS: *maintainers
+      VERSION: *kubernetes_tag
+    backend_options:
+      <<: *backend_options
+
+  kube-apiserver:
+    image: *image
+    privileged: true
+    settings:
+      dockerfile: ./containers/kubernetes/Dockerfile
+      context: ./containers/kubernetes
+      registry: ghcr.io
+      repo: ghcr.io/anza-labs/kube-apiserver
+      logins:
+      - <<: *logins
+      platforms: *platforms
+      tags: *kubernetes_tag
+      build_args_from_env:
+      - MAINTAINERS
+      - VERSION
+      build_args:
+      - BIN=kube-apiserver
+    environment:
+      MAINTAINERS: *maintainers
+      VERSION: *kubernetes_tag
+    backend_options:
+      <<: *backend_options
+
+  kube-scheduler:
+    image: *image
+    privileged: true
+    settings:
+      dockerfile: ./containers/kubernetes/Dockerfile
+      context: ./containers/kubernetes
+      registry: ghcr.io
+      repo: ghcr.io/anza-labs/kube-scheduler
+      logins:
+      - <<: *logins
+      platforms: *platforms
+      tags: *kubernetes_tag
+      build_args_from_env:
+      - MAINTAINERS
+      - VERSION
+      build_args:
+      - BIN=kube-scheduler
+    environment:
+      MAINTAINERS: *maintainers
+      VERSION: *kubernetes_tag
+    backend_options:
+      <<: *backend_options
+
+  kube-proxy:
+    image: *image
+    privileged: true
+    settings:
+      dockerfile: ./containers/kubernetes/Dockerfile
+      context: ./containers/kubernetes
+      registry: ghcr.io
+      repo: ghcr.io/anza-labs/kube-proxy
+      logins:
+      - <<: *logins
+      platforms: *platforms
+      tags: *kubernetes_tag
+      build_args_from_env:
+      - MAINTAINERS
+      - VERSION
+      build_args:
+      - BIN=kube-proxy
+    environment:
+      MAINTAINERS: *maintainers
+      VERSION: *kubernetes_tag
+    backend_options:
+      <<: *backend_options

@@ -1,0 +1,51 @@
+variables:
+- &platforms linux/amd64,linux/arm64,linux/riscv64
+- &image woodpeckerci/plugin-docker-buildx
+- &metrics_server_tag 'v0.7.1'
+- &maintainers 'Mateusz Urbanek <mateusz.urbanek.98@gmail.com>'
+- logins: &logins
+  - registry: https://ghcr.io/
+    username: shanduur-auto
+    password:
+      from_secret: ghcr-token
+- &backend_options
+  kubernetes:
+    securityContext:
+      privileged: true
+
+when:
+- event: push
+  branch: main
+  path:
+    include:
+    - '.woodpecker/kube.yaml'
+    - 'containers/metrics-server/*'
+- event: manual
+
+clone:
+  git:
+    image: woodpeckerci/plugin-git
+    settings:
+      recursive: true
+
+steps:
+  kubelet:
+    image: *image
+    privileged: true
+    settings:
+      dockerfile: ./containers/metrics-server/Dockerfile
+      context: ./containers/metrics-server
+      registry: ghcr.io
+      repo: ghcr.io/anza-labs/metrics-server
+      logins:
+      - <<: *logins
+      platforms: *platforms
+      tags: *metrics_server_tag
+      build_args_from_env:
+      - MAINTAINERS
+      - VERSION
+    environment:
+      MAINTAINERS: *maintainers
+      VERSION: *metrics_server_tag
+    backend_options:
+      <<: *backend_options
