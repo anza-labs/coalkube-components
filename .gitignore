@@ -1,0 +1,5 @@
+# MacOS attributes files
+.DS_Store
+
+# Generated versions.mk
+versions.mk
