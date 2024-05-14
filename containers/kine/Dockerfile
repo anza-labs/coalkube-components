@@ -30,6 +30,7 @@ LABEL org.opencontainers.image.version="${VERSION}"
 LABEL org.opencontainers.image.license="Apache-2.0"
 LABEL org.opencontainers.image.documentation="https://github.com/k3s-io/kine"
 LABEL org.opencontainers.image.base.name="scratch"
+LABEL dev.anza-labs.image.executable="/usr/bin/kine"
 
 WORKDIR /usr/bin
 COPY --from=build /work/kine/bin/kine /usr/bin/
