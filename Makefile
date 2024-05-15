@@ -9,7 +9,22 @@ PLATFORM ?= linux/$(shell arch)
 .PHONY: all
 all: crun containerd kine metrics-server \
 	kubernetes/kubelet kubernetes/kube-controller-manager kubernetes/kube-apiserver \
-	kubernetes/kube-scheduler kubernetes/kube-proxy
+	kubernetes/kube-scheduler kubernetes/kube-proxy \
+	linux-rpi4 linux-marscm
+
+.PHONY: lint
+lint:
+	for dockerfile in $(shell find . -name Dockerfile); do \
+		echo $$dockerfile; \
+		$(ENGINE) run \
+			--rm \
+			--volume=$(shell pwd):/repo \
+			--workdir=/repo \
+			--interactive \
+			ghcr.io/hadolint/hadolint \
+				hadolint -c .hadolint.yaml $$dockerfile \
+		; \
+	done
 
 update:
 	@./hack/update-versions.sh
@@ -55,3 +70,19 @@ kubernetes/%:
 		--build-arg=VERSION=$(KUBERNETES) \
 		$(ENGINE_ARGS) \
 		./containers/kubernetes
+
+linux-rpi-cm4:
+	$(ENGINE) build \
+		--platform=linux/arm64 \
+		--tag=$(REPOSITORY)/linux:rpi-cm4-$(RASPBERRYPI_LINUX) \
+		--build-arg=BRANCH=$(RASPBERRYPI_LINUX) \
+		$(ENGINE_ARGS) \
+		./linux/raspberrypi-cm4
+
+linux-mars-cm-sd:
+	$(ENGINE) build \
+		--platform=linux/riscv64 \
+		--tag=$(REPOSITORY)/linux:marscm-$(MILKV_MARS_CM_SD_LINUX) \
+		--build-arg=BRANCH=$(MILKV_MARS_CM_SD_LINUX) \
+		$(ENGINE_ARGS) \
+		./linux/milkv-mars-cm-sdcard

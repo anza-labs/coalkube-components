@@ -3,3 +3,6 @@
 
 # Generated versions.mk
 versions.mk
+
+# Temporary directory
+tmp/

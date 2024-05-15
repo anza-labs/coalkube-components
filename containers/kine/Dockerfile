@@ -1,14 +1,15 @@
-FROM --platform=${BUILDPLATFORM} docker.io/tonistiigi/xx AS xx
+FROM --platform=${BUILDPLATFORM} docker.io/tonistiigi/xx:1.4.0 AS xx
 FROM --platform=${BUILDPLATFORM} docker.io/library/golang:1.22-alpine AS build
 COPY --from=xx / /
 
 ARG TARGETPLATFORM
 ARG VERSION
 
-RUN apk add \
+RUN apk add --no-cache \
         clang git lld && \
     xx-apk add \
-        gcc musl-dev
+        gcc musl-dev && \
+    rm -rf /var/cache/apk/*
 
 WORKDIR /work
 RUN git clone --branch=${VERSION} --single-branch https://github.com/k3s-io/kine.git

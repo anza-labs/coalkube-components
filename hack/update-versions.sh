@@ -16,6 +16,10 @@ function getver() {
     curl -fsSL "https://api.github.com/repos/${1}/releases/latest" | jq -r '.tag_name'
 }
 
+function getdefault() {
+    curl -fsSL "https://api.github.com/repos/${1}" | jq -r '.default_branch'
+}
+
 function extract_current_tag() {
     local tag_name="${1}"
     local source_file="${2}"
@@ -49,3 +53,13 @@ current_metrics_server_tag="$(extract_current_tag '&metrics_server_tag' './.wood
 metrics_server_tag="$(getver kubernetes-sigs/metrics-server)"
 echo "METRICS_SERVER=${metrics_server_tag}" >> .versions.env
 "${sed_command}" -i "s/'${current_metrics_server_tag}'/\'${metrics_server_tag}\'/g" './.woodpecker/metrics-server.yaml'
+
+current_raspberrypi_linux_branch="$(extract_current_tag '&raspberrypi_linux_branch' './.woodpecker/linux-rpi-cm4.yaml')"
+raspberrypi_linux_branch="$(getdefault raspberrypi/linux)"
+echo "RASPBERRYPI_LINUX=${raspberrypi_linux_branch}" >> .versions.env
+"${sed_command}" -i "s/'${current_raspberrypi_linux_branch}'/\'${raspberrypi_linux_branch}\'/g" './.woodpecker/linux-rpi-cm4.yaml'
+
+current_mars_cm_sd_linux_branch="$(extract_current_tag '&mars_cm_sd_linux_branch' './.woodpecker/linux-mars-cm-sd.yaml')"
+mars_cm_sd_linux_branch="dev-mars-cm-sdcard"
+echo "MILKV_MARS_CM_SD_LINUX=${mars_cm_sd_linux_branch}" >> .versions.env
+"${sed_command}" -i "s/'${current_mars_cm_sd_linux_branch}'/\'${mars_cm_sd_linux_branch}\'/g" './.woodpecker/linux-mars-cm-sd.yaml'

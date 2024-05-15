@@ -1,4 +1,4 @@
-FROM --platform=${BUILDPLATFORM} docker.io/tonistiigi/xx AS xx
+FROM --platform=${BUILDPLATFORM} docker.io/tonistiigi/xx:1.4.0 AS xx
 FROM --platform=${BUILDPLATFORM} docker.io/library/golang:1.22 AS build
 COPY --from=xx / /
 
