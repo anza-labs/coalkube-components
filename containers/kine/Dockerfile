@@ -1,23 +1,28 @@
-FROM --platform=${BUILDPLATFORM} docker.io/library/golang:1.22 AS build
+FROM --platform=${BUILDPLATFORM} docker.io/tonistiigi/xx AS xx
+FROM --platform=${BUILDPLATFORM} docker.io/library/golang:1.22-alpine AS build
+COPY --from=xx / /
 
+ARG TARGETPLATFORM
 ARG VERSION
 
+RUN apk add \
+        clang git lld && \
+    xx-apk add \
+        gcc musl-dev
+
 WORKDIR /work
-RUN git clone --branch ${VERSION} --single-branch https://github.com/k3s-io/kine.git
+RUN git clone --branch=${VERSION} --single-branch https://github.com/k3s-io/kine.git
 WORKDIR /work/kine
 
-ARG TARGETARCH
+ENV CGO_ENABLED=1
 
-ENV GOOS=linux
-ENV GOARCH=${TARGETARCH}
-ENV CGO_ENABLED=0
-
-RUN go build \
-    -o ./bin/kine \
-    -mod=readonly \
-    -trimpath \
-    -ldflags="-extldflags=-static -s -w" \
-    .
+RUN xx-go build \
+        -o ./bin/kine \
+        -mod=readonly \
+        -trimpath \
+        -ldflags="-extldflags=-static -s -w" \
+        . && \
+    xx-verify ./bin/kine
 
 ARG TARGETPLATFORM
 FROM --platform=${TARGETPLATFORM} scratch

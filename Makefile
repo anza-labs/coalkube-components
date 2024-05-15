@@ -1,7 +1,7 @@
 _VERSIONS := $(shell bash -c "cat .versions.env | sed 's/=/ := /' | sed 's/^/export /' > versions.mk")
 include versions.mk
 
-REGISTRY ?= ghcr.io
+REPOSITORY ?= ghcr.io/anza-labs
 ENGINE ?= docker
 ENGINE_ARGS ?=
 PLATFORM ?= linux/$(shell arch)
@@ -18,7 +18,7 @@ update:
 containerd:
 	$(ENGINE) build \
 		--platform=$(PLATFORM) \
-		--tag=$(REGISTRY)/shanduur/containerd:$(CONTAINERD) \
+		--tag=$(REPOSITORY)/containerd:$(CONTAINERD) \
 		--build-arg=VERSION=$(CONTAINERD) \
 		$(ENGINE_ARGS) \
 		./containers/containerd
@@ -26,7 +26,7 @@ containerd:
 crun:
 	$(ENGINE) build \
 		--platform=$(PLATFORM) \
-		--tag=$(REGISTRY)/shanduur/crun:$(CRUN) \
+		--tag=$(REPOSITORY)/crun:$(CRUN) \
 		--build-arg=VERSION=$(CRUN) \
 		$(ENGINE_ARGS) \
 		./containers/crun
@@ -34,7 +34,7 @@ crun:
 kine:
 	$(ENGINE) build \
 		--platform=$(PLATFORM) \
-		--tag=$(REGISTRY)/shanduur/kine:$(KINE) \
+		--tag=$(REPOSITORY)/kine:$(KINE) \
 		--build-arg=VERSION=$(KINE) \
 		$(ENGINE_ARGS) \
 		./containers/kine
@@ -42,7 +42,7 @@ kine:
 metrics-server:
 	$(ENGINE) build \
 		--platform=$(PLATFORM) \
-		--tag=$(REGISTRY)/shanduur/metrics-server:$(METRICS_SERVER) \
+		--tag=$(REPOSITORY)/metrics-server:$(METRICS_SERVER) \
 		--build-arg=VERSION=$(METRICS_SERVER) \
 		$(ENGINE_ARGS) \
 		./containers/metrics-server
@@ -50,7 +50,7 @@ metrics-server:
 kubernetes/%:
 	$(ENGINE) build \
 		--platform=$(PLATFORM) \
-		--tag=$(REGISTRY)/shanduur/$*:$(KUBERNETES) \
+		--tag=$(REPOSITORY)/$*:$(KUBERNETES) \
 		--build-arg=BIN=$* \
 		--build-arg=VERSION=$(KUBERNETES) \
 		$(ENGINE_ARGS) \

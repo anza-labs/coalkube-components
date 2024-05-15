@@ -1,25 +1,25 @@
+FROM --platform=${BUILDPLATFORM} docker.io/tonistiigi/xx AS xx
 FROM --platform=${BUILDPLATFORM} docker.io/library/golang:1.22 AS build
+COPY --from=xx / /
 
+ARG TARGETPLATFORM
 ARG VERSION
 
 WORKDIR /work
-RUN git clone --branch ${VERSION} --single-branch https://github.com/kubernetes/kubernetes.git
+RUN git clone --branch=${VERSION} --single-branch https://github.com/kubernetes/kubernetes.git
 WORKDIR /work/kubernetes
 
-ARG TARGETARCH
-
-ENV GOOS=linux
-ENV GOARCH=${TARGETARCH}
 ENV CGO_ENABLED=0
 
 ARG BIN
 
-RUN go build \
-    -o ./bin/${BIN} \
-    -mod=readonly \
-    -trimpath \
-    -ldflags="-extldflags=-static -s -w" \
-    ./cmd/${BIN}
+RUN xx-go build \
+        -o ./bin/${BIN} \
+        -mod=readonly \
+        -trimpath \
+        -ldflags="-extldflags=-static -s -w" \
+        ./cmd/${BIN} && \
+    xx-verify ./bin/${BIN}
 
 ARG TARGETPLATFORM
 FROM --platform=${TARGETPLATFORM} scratch
