@@ -2,7 +2,7 @@ name: scheduled
 
 on:
   schedule:
-    - cron: '0 2 * * 4'
+    - cron: '0 2 * * *'
 
 permissions:
   contents: write
@@ -17,8 +17,11 @@ jobs:
           make update
       - id: check_changes
         run: |
-          git diff --quiet
-          echo "diff=$?" > "${GITHUB_OUTPUT}"
+          if ! git diff --quiet ; then
+            echo "diff=1" > "${GITHUB_OUTPUT}";
+          else
+            echo "diff=0" > "${GITHUB_OUTPUT}";
+          fi
       - uses: peter-evans/create-pull-request@v6
         if: ${{ steps.check_changes.outputs.diff }} == 1
         with:
