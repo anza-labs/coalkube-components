@@ -1,7 +1,7 @@
 variables:
 - &platforms linux/amd64,linux/arm64,linux/riscv64
 - &image woodpeckerci/plugin-docker-buildx
-- &containerd_tag '1.7.16'
+- &containerd_tag '1.7.17'
 - &maintainers 'Mateusz Urbanek <mateusz.urbanek.98@gmail.com>'
 - logins: &logins
   - registry: https://ghcr.io/
