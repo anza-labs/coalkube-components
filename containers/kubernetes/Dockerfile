@@ -6,7 +6,7 @@ ARG TARGETPLATFORM
 ARG VERSION
 
 WORKDIR /work
-RUN git clone --branch=${VERSION} --single-branch https://github.com/kubernetes/kubernetes.git
+COPY ./src/ /work/kubernetes
 WORKDIR /work/kubernetes
 
 ENV CGO_ENABLED=0

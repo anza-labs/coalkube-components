@@ -6,7 +6,7 @@ ARG TARGETPLATFORM
 ARG VERSION
 
 WORKDIR /work
-RUN git clone --branch=${VERSION} --single-branch https://github.com/kubernetes-sigs/metrics-server.git
+COPY ./src/ /work/metrics-server
 WORKDIR /work/metrics-server
 
 ENV CGO_ENABLED=0

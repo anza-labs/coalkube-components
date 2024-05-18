@@ -12,7 +12,7 @@ RUN apk add --no-cache \
     rm -rf /var/cache/apk/*
 
 WORKDIR /work
-RUN git clone --branch=${VERSION} --single-branch https://github.com/k3s-io/kine.git
+COPY ./src /work/kine
 WORKDIR /work/kine
 
 ENV CGO_ENABLED=1

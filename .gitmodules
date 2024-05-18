@@ -1,0 +1,20 @@
+[submodule "containers/kine/src"]
+	shallow = true
+	path = containers/kine/src
+	url = https://github.com/k3s-io/kine.git
+[submodule "containers/metrics-server/src"]
+	shallow = true
+	path = containers/metrics-server/src
+	url = https://github.com/kubernetes-sigs/metrics-server.git
+[submodule "containers/kubernetes/src"]
+	shallow = true
+	path = containers/kubernetes/src
+	url = https://github.com/kubernetes/kubernetes.git
+[submodule "linux/milkv-mars-cm-sdcard/src"]
+	shallow = true
+	path = linux/milkv-mars-cm-sdcard/src
+	url = https://github.com/milkv-mars/mars-buildroot-sdk.git
+[submodule "linux/raspberrypi-cm4/src"]
+	shallow = true
+	path = linux/raspberrypi-cm4/src
+	url = https://github.com/raspberrypi/linux.git

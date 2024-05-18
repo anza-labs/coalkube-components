@@ -16,7 +16,7 @@ indent_size = 4
 [*.{yaml,yml,tf,hcl}]
 indent_size = 2
 
-[{Makefile,**.mk}]
+[{Makefile,**.mk,.gitmodules}]
 indent_style = tab
 
 [MAINTAINERS]

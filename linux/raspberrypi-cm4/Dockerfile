@@ -8,7 +8,7 @@ RUN apt-get update && \
 
 WORKDIR /work
 ARG BRANCH
-RUN git clone --branch=${BRANCH} --single-branch --depth=1 https://github.com/raspberrypi/linux
+COPY ./src/ /work/linux
 WORKDIR /work/linux
 
 ENV KERNEL=kernel8

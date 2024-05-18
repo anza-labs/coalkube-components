@@ -26,6 +26,15 @@ function extract_current_tag() {
     grep "${tag_name}" "${source_file}" | "${sed_command}" -E "s/.*'(.*)'/\1/"
 }
 
+function submodule_update() {(
+    local location="${1}"
+    local kind="${2}"
+    local version="${3}"
+    cd "${location}"
+    git fetch origin "${version}"
+    git checkout "${kind}/${version}"
+)}
+
 echo -n "" > .versions.env
 
 current_containerd_tag="$(extract_current_tag '&containerd_tag' './.woodpecker/containerd.yaml')"
@@ -43,23 +52,28 @@ current_kine_tag="$(extract_current_tag '&kine_tag' './.woodpecker/kine.yaml')"
 kine_tag="$(getver k3s-io/kine)"
 echo "KINE=${kine_tag}" >> .versions.env
 "${sed_command}" -i "s/'${current_kine_tag}'/\'${kine_tag}\'/g" './.woodpecker/kine.yaml'
+submodule_update ./containers/kine/src tags "${kine_tag}"
 
 current_kubernetes_tag="$(extract_current_tag '&kubernetes_tag' './.woodpecker/kube.yaml')"
 kubernetes_tag="$(getver kubernetes/kubernetes)"
 echo "KUBERNETES=${kubernetes_tag}" >> .versions.env
 "${sed_command}" -i "s/'${current_kubernetes_tag}'/\'${kubernetes_tag}\'/g" './.woodpecker/kube.yaml'
+submodule_update ./containers/kubernetes/src tags "${kubernetes_tag}"
 
 current_metrics_server_tag="$(extract_current_tag '&metrics_server_tag' './.woodpecker/metrics-server.yaml')"
 metrics_server_tag="$(getver kubernetes-sigs/metrics-server)"
 echo "METRICS_SERVER=${metrics_server_tag}" >> .versions.env
 "${sed_command}" -i "s/'${current_metrics_server_tag}'/\'${metrics_server_tag}\'/g" './.woodpecker/metrics-server.yaml'
+submodule_update ./containers/metrics-server/src tags "${metrics_server_tag}"
 
 current_raspberrypi_linux_branch="$(extract_current_tag '&raspberrypi_linux_branch' './.woodpecker/linux-rpi-cm4.yaml')"
 raspberrypi_linux_branch="$(getdefault raspberrypi/linux)"
 echo "RASPBERRYPI_LINUX=${raspberrypi_linux_branch}" >> .versions.env
 "${sed_command}" -i "s/'${current_raspberrypi_linux_branch}'/\'${raspberrypi_linux_branch}\'/g" './.woodpecker/linux-rpi-cm4.yaml'
+submodule_update ./linux/raspberrypi-cm4/src origin "${raspberrypi_linux_branch}"
 
 current_mars_cm_sd_linux_branch="$(extract_current_tag '&mars_cm_sd_linux_branch' './.woodpecker/linux-mars-cm-sd.yaml')"
-mars_cm_sd_linux_branch="dev-mars-cm-sdcard"
+mars_cm_sd_linux_branch="dev-mars-cm-sdcard" # NOTE: hardcoded branch
 echo "MILKV_MARS_CM_SD_LINUX=${mars_cm_sd_linux_branch}" >> .versions.env
 "${sed_command}" -i "s/'${current_mars_cm_sd_linux_branch}'/\'${mars_cm_sd_linux_branch}\'/g" './.woodpecker/linux-mars-cm-sd.yaml'
+submodule_update ./linux/milkv-mars-cm-sdcard/src origin "${mars_cm_sd_linux_branch}"

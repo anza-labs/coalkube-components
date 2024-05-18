@@ -34,7 +34,7 @@ jobs:
           branch: 'chore-automated-version-update'
           signoff: true
           author: 'github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>'
-          delete-branch: true
+          delete-branch: false
 
   cleanup:
     runs-on: ubuntu-latest

@@ -10,7 +10,7 @@ RUN apt-get update && \
 
 WORKDIR /work
 ARG BRANCH
-RUN git clone --branch=${BRANCH} --single-branch --depth=1 https://github.com/milkv-mars/mars-buildroot-sdk
+COPY ./src/ /work/mars-buildroot-sdk
 WORKDIR /work/mars-buildroot-sdk
 
 RUN make -j"$(nproc)" vmlinux

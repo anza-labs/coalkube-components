@@ -18,6 +18,12 @@ when:
   branch: main
 - event: manual
 
+clone:
+  git:
+    image: woodpeckerci/plugin-git
+    settings:
+      recursive: true
+
 steps:
   kine:
     image: *image
