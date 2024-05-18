@@ -22,9 +22,14 @@ clone:
   git:
     image: woodpeckerci/plugin-git
     settings:
-      recursive: true
+      recursive: false
 
 steps:
+  submodule:
+    image: woodpeckerci/plugin-git
+    commands:
+    - git submodule update --init --depth=1 containers/metrics-server/src
+
   kubelet:
     image: *image
     privileged: true

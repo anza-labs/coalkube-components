@@ -18,7 +18,18 @@ when:
   branch: main
 - event: manual
 
+clone:
+  git:
+    image: woodpeckerci/plugin-git
+    settings:
+      recursive: false
+
 steps:
+  submodule:
+    image: woodpeckerci/plugin-git
+    commands:
+    - git submodule update --init --depth=1 linux/milkv-mars-cm-sdcard/src
+
   mars_cm_sd_linux:
     image: *image
     privileged: true

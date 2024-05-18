@@ -22,9 +22,14 @@ clone:
   git:
     image: woodpeckerci/plugin-git
     settings:
-      recursive: true
+      recursive: false
 
 steps:
+  submodule:
+    image: woodpeckerci/plugin-git
+    commands:
+    - git submodule update --init --depth=1 containers/kine/src
+
   kine:
     image: *image
     privileged: true
