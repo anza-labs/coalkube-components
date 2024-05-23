@@ -30,6 +30,7 @@ function submodule_update() {(
     local location="${1}"
     local kind="${2}"
     local version="${3}"
+    git submodule update --init --depth=1 "${location}"
     cd "${location}"
     git fetch origin "${version}"
     git checkout "${kind}/${version}"
