@@ -1,4 +1,4 @@
-FROM --platform=${BUILDPLATFORM} docker.io/library/alpine:3.19 AS alpine
+FROM --platform=${BUILDPLATFORM} docker.io/library/alpine:3.20 AS alpine
 
 ARG VERSION
 ARG TARGETARCH
