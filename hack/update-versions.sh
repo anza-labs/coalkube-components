@@ -33,7 +33,7 @@ function submodule_update() {(
     git submodule update --init --depth=1 "${location}"
     cd "${location}"
     git fetch origin "${version}"
-    git checkout "${kind}/${version}"
+    git checkout "$(git ls-remote origin | grep "${version}\$" | awk '{print $1}')"
 )}
 
 echo -n "" > .versions.env
