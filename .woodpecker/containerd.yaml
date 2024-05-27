@@ -18,6 +18,12 @@ when:
   branch: main
 - event: manual
 
+clone:
+  git:
+    image: woodpeckerci/plugin-git
+    settings:
+      recursive: false
+
 steps:
   containerd:
     image: *image
