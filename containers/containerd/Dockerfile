@@ -19,7 +19,6 @@ LABEL org.opencontainers.image.version="${VERSION}"
 LABEL org.opencontainers.image.license="Apache-2.0"
 LABEL org.opencontainers.image.documentation="https://containerd.io"
 LABEL org.opencontainers.image.base.name="scratch"
-LABEL dev.anza-labs.image.executable="/usr/bin/containerd"
 
 WORKDIR /usr/bin
 COPY --from=alpine /work/bin/containerd /usr/bin/

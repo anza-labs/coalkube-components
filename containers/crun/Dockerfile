@@ -19,7 +19,6 @@ LABEL org.opencontainers.image.version="${VERSION}"
 LABEL org.opencontainers.image.license="GPL-2.0, LGPL-2.1"
 LABEL org.opencontainers.image.documentation="https://github.com/containers/crun"
 LABEL org.opencontainers.image.base.name="scratch"
-LABEL dev.anza-labs.image.executable="/usr/bin/crun"
 
 WORKDIR /usr/bin
 COPY --from=alpine /work/crun /usr/bin/

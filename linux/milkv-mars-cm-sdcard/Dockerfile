@@ -35,11 +35,5 @@ LABEL org.opencontainers.image.license="GPL-2.0 WITH Linux-syscall-note"
 LABEL org.opencontainers.image.documentation="https://github.com/milkv-mars/mars-buildroot-sdk"
 LABEL org.opencontainers.image.base.name="scratch"
 
-LABEL dev.anza-labs.target.vendor="milkv"
-LABEL dev.anza-labs.target.version="mars-cm-sdcard"
-LABEL dev.anza-labs.target.partition.scheme="boot:fs=fat32:target=/boot;lib:fs=ext4:target=/lib"
-LABEL dev.anza-labs.target.partition.boot="/boot"
-LABEL dev.anza-labs.target.partition.lib="/lib"
-
 WORKDIR /
 COPY --from=build /mnt/fat32 /mnt/ext4 /

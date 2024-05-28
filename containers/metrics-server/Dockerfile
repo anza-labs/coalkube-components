@@ -30,7 +30,6 @@ LABEL org.opencontainers.image.version="${VERSION}"
 LABEL org.opencontainers.image.license="Apache-2.0"
 LABEL org.opencontainers.image.documentation="https://github.com/kubernetes-sigs/metrics-server"
 LABEL org.opencontainers.image.base.name="scratch"
-LABEL dev.anza-labs.image.executable="/usr/bin/metrics-server"
 
 WORKDIR /usr/bin
 COPY --from=build /work/metrics-server/bin/metrics-server /usr/bin/

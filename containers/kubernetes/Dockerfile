@@ -33,7 +33,6 @@ LABEL org.opencontainers.image.version="${VERSION}"
 LABEL org.opencontainers.image.license="Apache-2.0"
 LABEL org.opencontainers.image.documentation="https://kubernetes.io/docs/home"
 LABEL org.opencontainers.image.base.name="scratch"
-LABEL dev.anza-labs.image.executable="/usr/bin/${BIN}"
 
 WORKDIR /usr/bin
 COPY --from=build /work/kubernetes/bin/${BIN} /usr/bin/
