@@ -8,7 +8,8 @@ PLATFORM ?= linux/$(shell arch)
 
 .PHONY: all
 all: crun containerd kine metrics-server \
-	kubernetes/kubelet kubernetes/kube-controller-manager kubernetes/kube-apiserver \
+	kubernetes/kubeadm kubernetes/kubelet \
+	kubernetes/kube-controller-manager kubernetes/kube-apiserver \
 	kubernetes/kube-scheduler kubernetes/kube-proxy \
 	linux-rpi4 linux-marscm
 

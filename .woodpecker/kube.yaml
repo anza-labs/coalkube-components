@@ -60,6 +60,32 @@ steps:
     - path:
         <<: *path_event
 
+  kubeadm:
+    image: *image
+    privileged: true
+    settings:
+      dockerfile: ./containers/kubernetes/Dockerfile
+      context: ./containers/kubernetes
+      registry: ghcr.io
+      repo: ghcr.io/anza-labs/kubeadm
+      logins:
+      - <<: *logins
+      platforms: *platforms
+      tags: *kubernetes_tag
+      build_args_from_env:
+      - MAINTAINERS
+      - VERSION
+      build_args:
+      - BIN=kubeadm
+    environment:
+      MAINTAINERS: *maintainers
+      VERSION: *kubernetes_tag
+    backend_options:
+      <<: *backend_options
+    when:
+    - path:
+        <<: *path_event
+
   kube-controller-manager:
     image: *image
     privileged: true
