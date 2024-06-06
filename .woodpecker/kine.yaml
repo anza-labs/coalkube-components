@@ -1,7 +1,7 @@
 variables:
 - &platforms linux/amd64,linux/arm64,linux/riscv64
 - &image woodpeckerci/plugin-docker-buildx
-- &kine_tag 'v0.11.9'
+- &kine_tag 'v0.11.10'
 - &maintainers 'Mateusz Urbanek <mateusz.urbanek.98@gmail.com>'
 - logins: &logins
   - registry: https://ghcr.io/
