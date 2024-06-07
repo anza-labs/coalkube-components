@@ -6,13 +6,14 @@ ARG TARGETPLATFORM
 ARG VERSION
 
 RUN apk add --no-cache \
-        clang git lld && \
+    clang git lld && \
     xx-apk add \
-        gcc musl-dev && \
+    gcc musl-dev && \
     rm -rf /var/cache/apk/*
 
 WORKDIR /work
 COPY ./src /work/kine
+COPY ./hack/ /work/hack
 WORKDIR /work/kine
 
 ENV CGO_ENABLED=1
@@ -21,7 +22,7 @@ RUN xx-go build \
         -o ./bin/kine \
         -mod=readonly \
         -trimpath \
-        -ldflags="-extldflags=-static -s -w" \
+        -ldflags="$(/work/hack/ldflags.sh ${VERSION})" \
         . && \
     xx-verify ./bin/kine
 

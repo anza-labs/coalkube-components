@@ -53,6 +53,7 @@ kine:
 		--tag=$(REPOSITORY)/kine:$(KINE) \
 		--build-arg=VERSION=$(KINE) \
 		$(ENGINE_ARGS) \
+		--target build \
 		./containers/kine
 
 metrics-server:

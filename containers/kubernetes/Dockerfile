@@ -7,6 +7,7 @@ ARG VERSION
 
 WORKDIR /work
 COPY ./src/ /work/kubernetes
+COPY ./hack/ /work/hack
 WORKDIR /work/kubernetes
 
 ENV CGO_ENABLED=0
@@ -17,7 +18,7 @@ RUN xx-go build \
         -o ./bin/${BIN} \
         -mod=readonly \
         -trimpath \
-        -ldflags="-extldflags=-static -s -w" \
+        -ldflags="$(/work/hack/ldflags.sh ${VERSION})" \
         ./cmd/${BIN} && \
     xx-verify ./bin/${BIN}
 

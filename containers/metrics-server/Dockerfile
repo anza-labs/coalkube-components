@@ -7,6 +7,7 @@ ARG VERSION
 
 WORKDIR /work
 COPY ./src/ /work/metrics-server
+COPY ./hack/ /work/hack
 WORKDIR /work/metrics-server
 
 ENV CGO_ENABLED=0
@@ -15,7 +16,7 @@ RUN xx-go build \
         -o ./bin/metrics-server \
         -mod=readonly \
         -trimpath \
-        -ldflags="-extldflags=-static -s -w" \
+        -ldflags="$(/work/hack/ldflags.sh ${VERSION})" \
         ./cmd/metrics-server && \
     xx-verify ./bin/metrics-server
 
