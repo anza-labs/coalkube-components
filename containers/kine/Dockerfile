@@ -6,7 +6,7 @@ ARG TARGETPLATFORM
 ARG VERSION
 
 RUN apk add --no-cache \
-    clang git lld && \
+    bash clang git lld && \
     xx-apk add \
     gcc musl-dev && \
     rm -rf /var/cache/apk/*
