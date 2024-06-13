@@ -7,11 +7,10 @@ ENGINE_ARGS ?=
 PLATFORM ?= linux/$(shell arch)
 
 .PHONY: all
-all: crun containerd kine metrics-server \
-	kubernetes/kubeadm kubernetes/kubelet \
+all: kine metrics-server \
+	kubernetes/kubelet \
 	kubernetes/kube-controller-manager kubernetes/kube-apiserver \
-	kubernetes/kube-scheduler kubernetes/kube-proxy \
-	linux-rpi4 linux-marscm
+	kubernetes/kube-scheduler kubernetes/kube-proxy
 
 .PHONY: lint
 lint:
@@ -30,22 +29,6 @@ lint:
 update:
 	@./hack/update-versions.sh
 	@./hack/update-maintainers.sh
-
-containerd:
-	$(ENGINE) build \
-		--platform=$(PLATFORM) \
-		--tag=$(REPOSITORY)/containerd:$(CONTAINERD) \
-		--build-arg=VERSION=$(CONTAINERD) \
-		$(ENGINE_ARGS) \
-		./containers/containerd
-
-crun:
-	$(ENGINE) build \
-		--platform=$(PLATFORM) \
-		--tag=$(REPOSITORY)/crun:$(CRUN) \
-		--build-arg=VERSION=$(CRUN) \
-		$(ENGINE_ARGS) \
-		./containers/crun
 
 kine:
 	$(ENGINE) build \
@@ -71,19 +54,3 @@ kubernetes/%:
 		--build-arg=VERSION=$(KUBERNETES) \
 		$(ENGINE_ARGS) \
 		./containers/kubernetes
-
-linux-rpi-cm4:
-	$(ENGINE) build \
-		--platform=linux/arm64 \
-		--tag=$(REPOSITORY)/linux:rpi-cm4-$(RASPBERRYPI_LINUX) \
-		--build-arg=BRANCH=$(RASPBERRYPI_LINUX) \
-		$(ENGINE_ARGS) \
-		./linux/raspberrypi-cm4
-
-linux-mars-cm-sd:
-	$(ENGINE) build \
-		--platform=linux/riscv64 \
-		--tag=$(REPOSITORY)/linux:marscm-$(MILKV_MARS_CM_SD_LINUX) \
-		--build-arg=BRANCH=$(MILKV_MARS_CM_SD_LINUX) \
-		$(ENGINE_ARGS) \
-		./linux/milkv-mars-cm-sdcard

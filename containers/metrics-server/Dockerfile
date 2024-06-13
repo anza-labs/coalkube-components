@@ -17,11 +17,11 @@ RUN xx-go build \
         -mod=readonly \
         -trimpath \
         -ldflags="$(/work/hack/ldflags.sh ${VERSION})" \
-        ./cmd/metrics-server && \
-    xx-verify ./bin/metrics-server
+        ./cmd/metrics-server \
+    && xx-verify ./bin/metrics-server
 
 ARG TARGETPLATFORM
-FROM --platform=${TARGETPLATFORM} scratch
+FROM --platform=${TARGETPLATFORM} scratch AS final
 ARG VERSION
 ARG MAINTAINERS=''
 

@@ -10,11 +10,3 @@
 	shallow = true
 	path = containers/kubernetes/src
 	url = https://github.com/kubernetes/kubernetes.git
-[submodule "linux/milkv-mars-cm-sdcard/src"]
-	shallow = true
-	path = linux/milkv-mars-cm-sdcard/src
-	url = https://github.com/milkv-mars/mars-buildroot-sdk.git
-[submodule "linux/raspberrypi-cm4/src"]
-	shallow = true
-	path = linux/raspberrypi-cm4/src
-	url = https://github.com/raspberrypi/linux.git

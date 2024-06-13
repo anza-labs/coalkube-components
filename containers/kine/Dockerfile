@@ -6,10 +6,10 @@ ARG TARGETPLATFORM
 ARG VERSION
 
 RUN apk add --no-cache \
-    bash clang git lld && \
-    xx-apk add \
-    gcc musl-dev && \
-    rm -rf /var/cache/apk/*
+        bash clang git lld \
+    && xx-apk add \
+        gcc musl-dev \
+    && rm -rf /var/cache/apk/*
 
 WORKDIR /work
 COPY ./src /work/kine
@@ -23,11 +23,11 @@ RUN xx-go build \
         -mod=readonly \
         -trimpath \
         -ldflags="$(/work/hack/ldflags.sh ${VERSION})" \
-        . && \
-    xx-verify ./bin/kine
+        . \
+    && xx-verify ./bin/kine
 
 ARG TARGETPLATFORM
-FROM --platform=${TARGETPLATFORM} scratch
+FROM --platform=${TARGETPLATFORM} scratch AS final
 ARG VERSION
 ARG MAINTAINERS=''
 

@@ -19,11 +19,11 @@ RUN xx-go build \
         -mod=readonly \
         -trimpath \
         -ldflags="$(/work/hack/ldflags.sh ${VERSION})" \
-        ./cmd/${BIN} && \
-    xx-verify ./bin/${BIN}
+        ./cmd/${BIN} \
+    && xx-verify ./bin/${BIN}
 
 ARG TARGETPLATFORM
-FROM --platform=${TARGETPLATFORM} scratch
+FROM --platform=${TARGETPLATFORM} scratch AS final
 ARG BIN
 ARG VERSION
 ARG MAINTAINERS=''
